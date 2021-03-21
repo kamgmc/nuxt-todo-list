@@ -1,0 +1,29 @@
+html,
+body {
+  height: 100%;
+}
+
+div#__nuxt,
+#__layout,
+#__layout > div,
+#app {
+  min-height: 100vh;
+}
+
+.modal {
+  .modal-card-head {
+    background-color: $white;
+    border-bottom: none;
+    padding: 12px 20px 0 20px;
+
+    .modal-card-title {
+      color: $primary;
+    }
+  }
+
+  .modal-card-foot {
+    background-color: $white;
+    border-top: none;
+    padding: 12px 20px;
+  }
+}
