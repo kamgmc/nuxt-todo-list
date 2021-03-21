@@ -11,10 +11,15 @@ div#__nuxt,
 }
 
 .modal {
+  .modal-card {
+    @include mobile {
+      max-width: 90%;
+    }
+  }
   .modal-card-head {
     background-color: $white;
     border-bottom: none;
-    padding: 12px 20px 0 20px;
+    padding: 12px 20px;
 
     .modal-card-title {
       color: $primary;

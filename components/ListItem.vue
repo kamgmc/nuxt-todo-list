@@ -1,5 +1,5 @@
 <template>
-  <div class="panel-block is-block px-1 py-3 item">
+  <div class="panel-block is-block px-1 py-3 item" :class="{disabled}">
     <div class="checkbox-holder">
       <b-checkbox size="is-small" :value="item.completed" @input="$emit('click')"/>
     </div>
@@ -15,7 +15,7 @@
           icon="pencil"
           size="is-small"
           class="has-text-primary"
-          @click.native="$emit('edit')"
+          @click.native="$emit('update')"
         />
       </b-tooltip>
       <b-tooltip
@@ -41,6 +41,10 @@ export default {
     item: {
       required: true,
       type: Object
+    },
+    disabled: {
+      default: false,
+      type: Boolean
     }
   },
   data () {
@@ -53,6 +57,7 @@ export default {
 
 <style lang="scss">
 @import "assets/styles/main";
+
 .item {
   position: relative;
   padding: 0;
@@ -61,6 +66,16 @@ export default {
   border-radius: 6px;
   background-color: $white;
   cursor: grab;
+
+  &:hover {
+    .item-options {
+      opacity: 1;
+    }
+  }
+
+  &.disabled {
+    cursor: default;
+  }
 
   .checkbox-holder {
     position: absolute;
@@ -92,7 +107,7 @@ export default {
     }
   }
 
-  &:hover {
+  @include touch {
     .item-options {
       opacity: 1;
     }

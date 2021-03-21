@@ -1,7 +1,7 @@
 <template>
   <div class="has-background-primary">
     <nav
-      class="navbar header has-background-primary is-justify-content-flex-end is-align-items-center"
+      class="header is-flex has-background-primary is-justify-content-center is-align-items-center"
       role="navigation"
       aria-label="main navigation"
     >
@@ -9,7 +9,7 @@
         <b-autocomplete
           v-model="search"
           rounded
-          placeholder="e.g. jQuery"
+          placeholder="Buscar tarea..."
           icon="magnify"
           clearable
         />
@@ -20,21 +20,13 @@
         <div class="columns is-justify-content-center">
           <list
             title="Pendiente"
-            :list="todoList"
-            @createItem="createTask(false)"
-            @editItem="updateTodoTask"
-            @removeItem="removeTodoTask"
-            @itemClicked="moveToComplete"
-            @added="toggleTodoTask"
+            group="tasks"
+            list-name="todoList"
           />
           <list
             title="Completado"
-            :list="completedList"
-            @createItem="createTask(true)"
-            @editItem="updateCompletedTask"
-            @removeItem="removeCompletedTask"
-            @itemClicked="moveToTodo"
-            @added="toggleCompletedTask"
+            group="tasks"
+            list-name="completedList"
           />
         </div>
       </section>
@@ -43,7 +35,6 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
 import List from '~/components/List'
 
 export default {
@@ -59,58 +50,27 @@ export default {
       set (value) {
         this.$store.commit('updateSearch', value)
       }
-    },
-    todoList: {
-      get () {
-        return this.$store.getters.filteredTodoList
-      },
-      set (value) {
-        this.$store.dispatch('updateTodoList', value)
-      }
-    },
-    completedList: {
-      get () {
-        return this.$store.getters.filteredCompletedList
-      },
-      set (value) {
-        this.$store.dispatch('updateCompletedList', value)
-      }
-    }
-  },
-  methods: {
-    ...mapMutations(['moveToTodo', 'moveToComplete', 'toggleItemComplete']),
-    ...mapActions(['createTask', 'updateTask', 'removeTask']),
-    updateTodoTask (index) {
-      this.updateTask({ list: 'todoList', index })
-    },
-    updateCompletedTask (index) {
-      this.updateTask({ list: 'completedList', index })
-    },
-    removeTodoTask (index) {
-      this.removeTask({ list: 'todoList', index })
-    },
-    removeCompletedTask (index) {
-      this.removeTask({ list: 'completedList', index })
-    },
-    toggleTodoTask ($event) {
-      if ($event !== undefined) {
-        this.toggleItemComplete({ list: 'todoList', index: $event.newIndex })
-      }
-    },
-    toggleCompletedTask ($event) {
-      if ($event !== undefined) {
-        this.toggleItemComplete({ list: 'completedList', index: $event.newIndex })
-      }
     }
   }
 }
 </script>
 <style lang="scss">
+@import "assets/styles/main";
 .header {
   padding: .75rem .5rem 0;
 
   .field {
     width: 30%;
+    padding: 0 1rem;
+    max-width: 760px;
+
+    @include touch {
+      width: 100%;
+    }
+
+    @include desktop-only {
+      width: 45%;
+    }
 
     input {
       border-color: white;

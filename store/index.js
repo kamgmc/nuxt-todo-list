@@ -50,6 +50,9 @@ export const getters = {
         .toLowerCase()
         .includes(state.search.toLowerCase())
     })
+  },
+  searching (state) {
+    return !!state.search
   }
 }
 
@@ -57,6 +60,7 @@ export const mutations = {
   //  Create
   createItem (state, { list, item }) {
     state[list].push(item)
+    state.search = ''
     Toast.open('Tarea creada')
   },
   //  Update
@@ -90,17 +94,23 @@ export const mutations = {
     item.completed = false
     state.completedList.splice(index, 1)
     state.todoList.push(item)
+  },
+  //  Sorting
+  sortList (state, { list, isSorted }) {
+    isSorted
+      ? state[list].sort((a, b) => a.content < b.content ? 1 : a.content > b.content ? -1 : 0)
+      : state[list].sort((a, b) => a.content < b.content ? -1 : a.content > b.content ? 1 : 0)
   }
 }
 
 export const actions = {
   //  Create
-  createTask ({ commit }, completed) {
-    const list = completed ? 'completedList' : 'todoList'
+  createTask ({ commit }, list) {
+    const completed = list === 'completedList'
     Dialog.prompt({
       message: 'Nueva tarea',
       inputAttrs: {
-        placeholder: 'e.g. Llamar a RRHH'
+        placeholder: 'Ej. Pagar universidad'
       },
       confirmText: 'Agregar',
       cancelText: 'Cancelar',
@@ -134,11 +144,5 @@ export const actions = {
       hasIcon: true,
       onConfirm: () => commit('removeItem', { list, index })
     })
-  },
-  updateTodoList ({ commit }, value) {
-    commit('updateList', { list: 'todoList', value })
-  },
-  updateCompletedList ({ commit }, value) {
-    commit('updateList', { list: 'completedList', value })
   }
 }
