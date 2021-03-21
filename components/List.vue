@@ -27,6 +27,9 @@
           @update="updateTask({list:listName, index})"
           @remove="removeTask({list:listName, index})"
         />
+        <div v-if="!list.length && searching" class="panel-block list-info">
+          No se han encontrado resultados
+        </div>
       </draggable>
       <div class="panel-block list-footer">
         <button class="button is-primary is-fullwidth" @click="createTask(listName)">
@@ -135,6 +138,11 @@ export default {
       margin-top: -9px;
       cursor: pointer;
     }
+  }
+
+  .list-info {
+    padding: 8px 20px;
+    color: #A0A0A0;
   }
 
   &-footer {
